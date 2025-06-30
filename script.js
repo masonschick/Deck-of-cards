@@ -28,6 +28,7 @@ class CardDeck {
             cardSuitBottom: document.getElementById('cardSuitBottom'),
             currentCardNumber: document.getElementById('currentCardNumber'),
             totalCards: document.getElementById('totalCards'),
+            cardCounter: document.getElementById('cardCounter'),
             deckStatus: document.getElementById('deckStatus'),
             timer: document.getElementById('timer'),
             startResetBtn: document.getElementById('startResetBtn'),
@@ -48,6 +49,16 @@ class CardDeck {
         this.setupEventListeners();
         this.resetWorkoutSelections();
         this.updateDisplay();
+        this.updateCardCounterVisibility();
+    }
+    
+    // Update card counter visibility
+    updateCardCounterVisibility() {
+        if (this.deckStarted && !this.showingCardBack) {
+            this.elements.cardCounter.classList.remove('hidden');
+        } else {
+            this.elements.cardCounter.classList.add('hidden');
+        }
     }
     
     // Reset workout selections to defaults
@@ -111,6 +122,7 @@ class CardDeck {
             this.elements.currentCard.classList.add('hidden');
             this.showingCardBack = true;
         }
+        this.updateCardCounterVisibility();
     }
     
     // Consolidated start/reset functionality (fixes timer bug)
@@ -148,6 +160,7 @@ class CardDeck {
             this.resetWorkoutSelections();
         }
         this.updateDisplay();
+        this.updateCardCounterVisibility();
     }
     
     // Update workout status text

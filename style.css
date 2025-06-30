@@ -13,6 +13,8 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* Prevent mobile zoom only - allow natural scrolling */
+    touch-action: manipulation;
 }
 
 .container {
@@ -151,7 +153,7 @@ main {
     justify-content: space-between;
     padding: 30px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .card.clickable {
@@ -159,12 +161,13 @@ main {
 }
 
 .card.clickable:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     box-shadow: 0 15px 50px rgba(0,0,0,0.5);
 }
 
 .card.clickable:active {
-    transform: scale(0.98) translateY(-2px);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
 }
 
 .card-content {
@@ -241,7 +244,7 @@ main {
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -249,8 +252,8 @@ main {
 }
 
 .btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+    transform: translateY(1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .btn:disabled {
@@ -266,7 +269,7 @@ main {
 
 .btn.primary:hover:not(:disabled) {
     background: linear-gradient(135deg, #218838, #1aa179);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
@@ -331,68 +334,5 @@ footer {
         padding: 15px 30px;
         font-size: 1.1rem;
         min-width: 180px;
-    }
-}
-
-/* Landscape orientation on mobile */
-@media (max-height: 600px) and (orientation: landscape) {
-    .container {
-        max-width: 100%;
-        padding: 10px;
-    }
-    
-    main {
-        flex-direction: row;
-        gap: 20px;
-        align-items: center;
-    }
-    
-    .card-display {
-        flex: 1;
-        min-height: auto;
-    }
-    
-    .card, .card-back {
-        width: 200px;
-        height: 280px;
-        padding: 15px;
-    }
-    
-    .card-back h3 {
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-    }
-    
-    .workout-selectors {
-        gap: 8px;
-    }
-    
-    .suit-label {
-        font-size: 1rem;
-    }
-    
-    .workout-select {
-        padding: 6px 8px;
-        font-size: 0.8rem;
-        padding-right: 25px;
-        background-size: 12px;
-        background-position: right 5px center;
-    }
-    
-    .value {
-        font-size: 3.5rem;
-    }
-    
-    .suit {
-        font-size: 2.5rem;
-    }
-    
-    .controls {
-        width: 200px;
-        flex-direction: column;
-    }
-    
-    .stats {
-        width: 200px;
     }
 } 
