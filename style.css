@@ -69,8 +69,8 @@ main {
 /* Card Back Styles */
 .card-back {
     width: 280px;
-    height: 450px;
-    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    height: 400px;
+    background: linear-gradient(135deg, #8b6bb1 0%, #6b46c1 100%);
     border-radius: 20px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     display: flex;
@@ -90,12 +90,12 @@ main {
     right: 0;
     bottom: 0;
     background-image: 
-        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
-        radial-gradient(circle at 75% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
-        radial-gradient(circle at 25% 75%, rgba(255,255,255,0.1) 2px, transparent 2px),
-        radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15) 2px, transparent 2px),
+        radial-gradient(circle at 75% 25%, rgba(255,255,255,0.15) 2px, transparent 2px),
+        radial-gradient(circle at 25% 75%, rgba(255,255,255,0.15) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(255,255,255,0.15) 2px, transparent 2px);
     background-size: 40px 40px;
-    opacity: 0.3;
+    opacity: 0.4;
     z-index: 1;
 }
 
@@ -107,13 +107,13 @@ main {
     left: 15px;
     right: 15px;
     bottom: 15px;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.25);
     border-radius: 15px;
     z-index: 1;
     background: linear-gradient(45deg, 
         transparent 45%, 
-        rgba(255,255,255,0.05) 49%, 
-        rgba(255,255,255,0.05) 51%, 
+        rgba(255,255,255,0.08) 49%, 
+        rgba(255,255,255,0.08) 51%, 
         transparent 55%
     );
 }
@@ -125,10 +125,10 @@ main {
 
 .card-back h3 {
     text-align: center;
-    font-size: 1.4rem;
-    margin-bottom: 16px;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
     color: white;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -136,42 +136,42 @@ main {
 .workout-selectors {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     flex: 1;
 }
 
 .selector-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
 }
 
 .suit-label {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .workout-select {
-    padding: 8px 10px;
-    border: 2px solid rgba(255,255,255,0.3);
+    padding: 7px 9px;
+    border: 2px solid rgba(255,255,255,0.4);
     border-radius: 10px;
     background: rgba(255,255,255,0.95);
     color: #333;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 8px center;
+    background-position: right 7px center;
     background-repeat: no-repeat;
-    background-size: 14px;
-    padding-right: 32px;
+    background-size: 13px;
+    padding-right: 30px;
 }
 
 .workout-select:focus {
@@ -182,7 +182,7 @@ main {
 }
 
 .workout-select:hover {
-    border-color: rgba(255,255,255,0.6);
+    border-color: rgba(255,255,255,0.7);
     background: rgba(255,255,255,0.98);
 }
 
@@ -330,30 +330,83 @@ footer {
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+
+/* Large phones (iPhone 14 Pro Max, etc.) - 415px to 480px width */
+@media (max-width: 480px) and (min-width: 415px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .card, .card-back {
+        width: 320px;
+        height: 450px;
+        padding: 25px;
+    }
+    
+    .card-back h3 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+    
+    .workout-selectors {
+        gap: 12px;
+    }
+    
+    .selector-group {
+        gap: 6px;
+    }
+    
+    .suit-label {
+        font-size: 1.1rem;
+    }
+    
+    .workout-select {
+        padding: 9px 11px;
+        font-size: 0.9rem;
+        padding-right: 35px;
+        background-size: 15px;
+        background-position: right 8px center;
+    }
+    
+    .value {
+        font-size: 6.5rem;
+    }
+    
+    .suit {
+        font-size: 4rem;
+    }
+    
+    .timer {
+        font-size: 2rem;
+        padding: 15px 30px;
+    }
+    
+    .btn {
+        padding: 18px 40px;
+        font-size: 1.2rem;
+        min-width: 200px;
+    }
+}
+
+/* Standard mobile phones - up to 414px width */
+@media (max-width: 414px) {
     .container {
         padding: 15px;
     }
     
-    .card {
-        width: 250px;
-        height: 350px;
-        padding: 20px;
-    }
-    
-    .card-back {
-        width: 250px;
-        height: 420px;
-        padding: 18px;
+    .card, .card-back {
+        width: 280px;
+        height: 400px;
+        padding: 22px;
     }
     
     .card-back h3 {
-        font-size: 1.2rem;
-        margin-bottom: 12px;
+        font-size: 1.25rem;
+        margin-bottom: 14px;
     }
     
     .workout-selectors {
-        gap: 10px;
+        gap: 9px;
     }
     
     .selector-group {
@@ -365,9 +418,66 @@ footer {
     }
     
     .workout-select {
-        padding: 7px 8px;
+        padding: 8px 10px;
         font-size: 0.85rem;
-        padding-right: 28px;
+        padding-right: 32px;
+        background-size: 13px;
+        background-position: right 7px center;
+    }
+    
+    .value {
+        font-size: 5.5rem;
+    }
+    
+    .suit {
+        font-size: 3.5rem;
+    }
+    
+    .timer {
+        font-size: 1.8rem;
+        padding: 14px 28px;
+    }
+    
+    .btn {
+        padding: 16px 35px;
+        font-size: 1.15rem;
+        min-width: 190px;
+    }
+}
+
+/* Small phones (iPhone SE, etc.) - up to 375px width */
+@media (max-width: 375px) {
+    .container {
+        padding: 12px;
+    }
+    
+    .card, .card-back {
+        width: 260px;
+        height: 380px;
+        padding: 20px;
+    }
+    
+    .card-back h3 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .workout-selectors {
+        gap: 8px;
+    }
+    
+    .selector-group {
+        gap: 3px;
+    }
+    
+    .suit-label {
+        font-size: 0.95rem;
+    }
+    
+    .workout-select {
+        padding: 7px 9px;
+        font-size: 0.8rem;
+        padding-right: 30px;
         background-size: 12px;
         background-position: right 6px center;
     }
@@ -381,13 +491,13 @@ footer {
     }
     
     .timer {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
         padding: 12px 24px;
     }
     
     .btn {
-        padding: 15px 30px;
+        padding: 14px 30px;
         font-size: 1.1rem;
-        min-width: 180px;
+        min-width: 170px;
     }
 } 
