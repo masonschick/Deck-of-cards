@@ -14,13 +14,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>🃏 Workout Card Deck</h1>
             <div class="timer" id="timer">00:00</div>
         </header>
 
         <main>
             <div class="card-display" id="cardDisplay">
-                <div class="card" id="currentCard">
+                <div class="card clickable" id="currentCard">
                     <div class="card-content">
                         <div class="suit" id="cardSuit">♠</div>
                         <div class="value" id="cardValue">A</div>
@@ -35,14 +34,12 @@
             </div>
 
             <div class="controls">
-                <button id="startBtn" class="btn primary">Start New Deck</button>
-                <button id="nextBtn" class="btn secondary" disabled>Next Card</button>
-                <button id="resetBtn" class="btn danger" disabled>Reset</button>
+                <button id="startResetBtn" class="btn primary">Start New Deck</button>
             </div>
         </main>
 
         <footer>
-            <p>Tap "Start New Deck" to shuffle and begin timing</p>
+            <p>Tap the card to advance • Tap button to start/reset</p>
         </footer>
     </div>
 

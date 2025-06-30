@@ -9,6 +9,7 @@ class CardDeck {
         this.currentCardIndex = 0;
         this.startTime = null;
         this.timerInterval = null;
+        this.deckStarted = false;
         
         // Get DOM elements (like your pygame screen setup)
         this.elements = {
@@ -19,9 +20,8 @@ class CardDeck {
             totalCards: document.getElementById('totalCards'),
             deckStatus: document.getElementById('deckStatus'),
             timer: document.getElementById('timer'),
-            startBtn: document.getElementById('startBtn'),
-            nextBtn: document.getElementById('nextBtn'),
-            resetBtn: document.getElementById('resetBtn')
+            startResetBtn: document.getElementById('startResetBtn'),
+            currentCard: document.getElementById('currentCard')
         };
         
         this.initializeApp();
@@ -53,19 +53,31 @@ class CardDeck {
         }
     }
     
-    // Start new deck (like pressing your Play button)
-    startNewDeck() {
-        this.shuffleDeck();
-        this.currentCardIndex = 0;
-        this.startTimer();
+    // Consolidated start/reset functionality (fixes timer bug)
+    startOrReset() {
+        if (!this.deckStarted || this.currentCardIndex === this.deck.length - 1) {
+            // Start new deck
+            this.shuffleDeck();
+            this.currentCardIndex = 0;
+            this.deckStarted = true;
+            this.startTimer();
+            this.elements.deckStatus.textContent = 'Deck in progress...';
+            this.elements.startResetBtn.textContent = 'Reset';
+        } else {
+            // Reset current deck
+            this.stopTimer();
+            this.currentCardIndex = 0;
+            this.deckStarted = false;
+            this.elements.timer.textContent = '00:00';
+            this.elements.deckStatus.textContent = 'Ready to start!';
+            this.elements.startResetBtn.textContent = 'Start New Deck';
+        }
         this.updateDisplay();
-        this.updateButtons();
-        this.elements.deckStatus.textContent = 'Deck in progress...';
     }
     
-    // Show next card (simpler than updating bullets/aliens)
+    // Show next card (now triggered by card click)
     nextCard() {
-        if (this.currentCardIndex < this.deck.length - 1) {
+        if (this.deckStarted && this.currentCardIndex < this.deck.length - 1) {
             this.currentCardIndex++;
             this.updateDisplay();
             
@@ -80,11 +92,12 @@ class CardDeck {
     completeDeck() {
         this.stopTimer();
         this.elements.deckStatus.textContent = '🎉 Deck complete!';
-        this.elements.nextBtn.disabled = true;
+        this.elements.startResetBtn.textContent = 'Start New Deck';
     }
     
     // Timer functions (simpler than your frame rate management)
     startTimer() {
+        this.stopTimer(); // Clear any existing timer
         this.startTime = Date.now();
         this.timerInterval = setInterval(() => {
             const elapsed = Date.now() - this.startTime;
@@ -102,16 +115,6 @@ class CardDeck {
         }
     }
     
-    // Reset everything (like restarting your game)
-    reset() {
-        this.stopTimer();
-        this.currentCardIndex = 0;
-        this.elements.timer.textContent = '00:00';
-        this.elements.deckStatus.textContent = 'Ready to start!';
-        this.updateDisplay();
-        this.updateButtons();
-    }
-    
     // Update display (like your _update_screen method but simpler)
     updateDisplay() {
         const currentCard = this.deck[this.currentCardIndex];
@@ -122,28 +125,20 @@ class CardDeck {
         
         // Color the card based on suit
         const isRed = currentCard.suit === '♥' || currentCard.suit === '♦';
-        document.getElementById('currentCard').className = `card ${isRed ? 'red' : 'black'}`;
-    }
-    
-    // Update button states (like your game state management)
-    updateButtons() {
-        const deckStarted = this.startTime !== null;
-        const deckComplete = this.currentCardIndex === this.deck.length - 1 && deckStarted;
-        
-        this.elements.startBtn.disabled = deckStarted && !deckComplete;
-        this.elements.nextBtn.disabled = !deckStarted || deckComplete;
-        this.elements.resetBtn.disabled = !deckStarted;
+        this.elements.currentCard.className = `card clickable ${isRed ? 'red' : 'black'}`;
     }
     
     // Event listeners (like your _check_events method)
     setupEventListeners() {
-        this.elements.startBtn.addEventListener('click', () => this.startNewDeck());
-        this.elements.nextBtn.addEventListener('click', () => this.nextCard());
-        this.elements.resetBtn.addEventListener('click', () => this.reset());
+        // Consolidated start/reset button
+        this.elements.startResetBtn.addEventListener('click', () => this.startOrReset());
+        
+        // Card click to advance (replaces Next Card button)
+        this.elements.currentCard.addEventListener('click', () => this.nextCard());
         
         // Keyboard support for easier testing
         document.addEventListener('keydown', (event) => {
-            if (event.code === 'Space' && !this.elements.nextBtn.disabled) {
+            if (event.code === 'Space' && this.deckStarted) {
                 event.preventDefault();
                 this.nextCard();
             }
