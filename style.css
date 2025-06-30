@@ -224,15 +224,15 @@ main {
 }
 
 .suit {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: bold;
 }
 
 .value {
-    font-size: 6rem;
+    font-size: 8rem;
     font-weight: bold;
     text-align: center;
-    line-height: 1;
+    line-height: 0.9;
 }
 
 .suit.bottom {
@@ -373,11 +373,11 @@ footer {
     }
     
     .value {
-        font-size: 6.5rem;
+        font-size: 8.5rem;
     }
     
     .suit {
-        font-size: 4rem;
+        font-size: 5rem;
     }
     
     .timer {
@@ -430,11 +430,11 @@ footer {
     }
     
     .value {
-        font-size: 5.5rem;
+        font-size: 7.5rem;
     }
     
     .suit {
-        font-size: 3.5rem;
+        font-size: 4.5rem;
     }
     
     .timer {
@@ -487,11 +487,11 @@ footer {
     }
     
     .value {
-        font-size: 5rem;
+        font-size: 6.5rem;
     }
     
     .suit {
-        font-size: 3rem;
+        font-size: 4rem;
     }
     
     .timer {
