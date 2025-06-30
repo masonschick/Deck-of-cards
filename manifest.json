@@ -2,7 +2,7 @@
   "name": "Workout Card Deck",
   "short_name": "Card Deck",
   "description": "Shuffled card deck timer for gym workouts",
-  "start_url": "/",
+  "start_url": "/Deck-of-cards/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#2196F3",
