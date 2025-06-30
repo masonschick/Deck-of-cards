@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Card Deck</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Card Deck">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🃏 Workout Card Deck</h1>
+            <div class="timer" id="timer">00:00</div>
+        </header>
+
+        <main>
+            <div class="card-display" id="cardDisplay">
+                <div class="card" id="currentCard">
+                    <div class="card-content">
+                        <div class="suit" id="cardSuit">♠</div>
+                        <div class="value" id="cardValue">A</div>
+                        <div class="suit bottom" id="cardSuitBottom">♠</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <p>Card <span id="currentCardNumber">1</span> of <span id="totalCards">52</span></p>
+                <p id="deckStatus">Ready to start!</p>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="btn primary">Start New Deck</button>
+                <button id="nextBtn" class="btn secondary" disabled>Next Card</button>
+                <button id="resetBtn" class="btn danger" disabled>Reset</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Tap "Start New Deck" to shuffle and begin timing</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
