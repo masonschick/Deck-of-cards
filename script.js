@@ -11,6 +11,7 @@ class CardDeck {
         this.timerInterval = null;
         this.deckStarted = false;
         this.showingCardBack = true;
+        this.onFinalCard = false;
         
         // Default workout selections (reset each session)
         this.defaultWorkouts = {
@@ -50,6 +51,7 @@ class CardDeck {
         this.resetWorkoutSelections();
         this.updateDisplay();
         this.updateCardCounterVisibility();
+        this.updateButtonText();
     }
     
     // Update card counter visibility
@@ -125,14 +127,18 @@ class CardDeck {
         this.updateCardCounterVisibility();
     }
     
-    // Consolidated start/reset functionality (fixes timer bug)
+    // Consolidated start/reset functionality with Done button logic
     startOrReset() {
-        if (!this.deckStarted || this.currentCardIndex === this.deck.length - 1) {
+        if (this.onFinalCard) {
+            // Done button clicked on final card - complete the deck
+            this.completeDeck();
+        } else if (!this.deckStarted || this.currentCardIndex === this.deck.length - 1) {
             // Start new deck
             this.updateWorkoutSelections(); // Get current dropdown values
             this.shuffleDeck();
             this.currentCardIndex = 0;
             this.deckStarted = true;
+            this.onFinalCard = false;
             this.startTimer();
             
             // Show regular card, hide card back
@@ -140,16 +146,16 @@ class CardDeck {
                 this.toggleCardView();
             }
             
-            this.elements.startResetBtn.textContent = 'Reset';
             this.updateWorkoutStatus();
+            this.updateButtonText();
         } else {
             // Reset current deck
             this.stopTimer();
             this.currentCardIndex = 0;
             this.deckStarted = false;
+            this.onFinalCard = false;
             this.elements.timer.textContent = '00:00';
             this.elements.deckStatus.textContent = 'Select workouts and start!';
-            this.elements.startResetBtn.textContent = 'Start New Deck';
             
             // Show card back, hide regular card
             if (!this.showingCardBack) {
@@ -158,6 +164,7 @@ class CardDeck {
             
             // Reset workout selections to defaults
             this.resetWorkoutSelections();
+            this.updateButtonText();
         }
         this.updateDisplay();
         this.updateCardCounterVisibility();
@@ -171,16 +178,28 @@ class CardDeck {
         }
     }
     
+    // Update button text based on current state
+    updateButtonText() {
+        if (!this.deckStarted) {
+            this.elements.startResetBtn.textContent = 'Start New Deck';
+        } else if (this.onFinalCard) {
+            this.elements.startResetBtn.textContent = 'Done';
+        } else {
+            this.elements.startResetBtn.textContent = 'Reset';
+        }
+    }
+    
     // Show next card (now triggered by card click)
     nextCard() {
-        if (this.deckStarted && this.currentCardIndex < this.deck.length - 1) {
+        if (this.deckStarted && this.currentCardIndex < this.deck.length - 1 && !this.onFinalCard) {
             this.currentCardIndex++;
             this.updateDisplay();
             this.updateWorkoutStatus();
             
-            // Check if deck is complete
+            // Check if we're on the final card (52nd)
             if (this.currentCardIndex === this.deck.length - 1) {
-                this.completeDeck();
+                this.onFinalCard = true;
+                this.updateButtonText();
             }
         }
     }
@@ -188,8 +207,9 @@ class CardDeck {
     // Complete deck (like game over but positive!)
     completeDeck() {
         this.stopTimer();
+        this.onFinalCard = false;
         this.elements.deckStatus.textContent = '🎉 Deck complete!';
-        this.elements.startResetBtn.textContent = 'Start New Deck';
+        this.updateButtonText();
     }
     
     // Timer functions (simpler than your frame rate management)
