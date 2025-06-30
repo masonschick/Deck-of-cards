@@ -19,7 +19,74 @@
 
         <main>
             <div class="card-display" id="cardDisplay">
-                <div class="card clickable" id="currentCard">
+                <!-- Card Back - Workout Selection Interface -->
+                <div class="card-back" id="cardBack">
+                    <h3>Select Workouts</h3>
+                    <div class="workout-selectors">
+                        <div class="selector-group">
+                            <label class="suit-label">♠️ Spades</label>
+                            <select id="spadesWorkout" class="workout-select">
+                                <option value="Push-ups">Push-ups</option>
+                                <option value="Sit-ups">Sit-ups</option>
+                                <option value="Bicycle crunches">Bicycle crunches</option>
+                                <option value="Flutter kicks" selected>Flutter kicks</option>
+                                <option value="Squats">Squats</option>
+                                <option value="Bulgarian split squats">Bulgarian split squats</option>
+                                <option value="Reverse lunges">Reverse lunges</option>
+                                <option value="Mountain climbers">Mountain climbers</option>
+                                <option value="Dips">Dips</option>
+                            </select>
+                        </div>
+                        
+                        <div class="selector-group">
+                            <label class="suit-label">♥️ Hearts</label>
+                            <select id="heartsWorkout" class="workout-select">
+                                <option value="Push-ups" selected>Push-ups</option>
+                                <option value="Sit-ups">Sit-ups</option>
+                                <option value="Bicycle crunches">Bicycle crunches</option>
+                                <option value="Flutter kicks">Flutter kicks</option>
+                                <option value="Squats">Squats</option>
+                                <option value="Bulgarian split squats">Bulgarian split squats</option>
+                                <option value="Reverse lunges">Reverse lunges</option>
+                                <option value="Mountain climbers">Mountain climbers</option>
+                                <option value="Dips">Dips</option>
+                            </select>
+                        </div>
+                        
+                        <div class="selector-group">
+                            <label class="suit-label">♦️ Diamonds</label>
+                            <select id="diamondsWorkout" class="workout-select">
+                                <option value="Push-ups">Push-ups</option>
+                                <option value="Sit-ups">Sit-ups</option>
+                                <option value="Bicycle crunches" selected>Bicycle crunches</option>
+                                <option value="Flutter kicks">Flutter kicks</option>
+                                <option value="Squats">Squats</option>
+                                <option value="Bulgarian split squats">Bulgarian split squats</option>
+                                <option value="Reverse lunges">Reverse lunges</option>
+                                <option value="Mountain climbers">Mountain climbers</option>
+                                <option value="Dips">Dips</option>
+                            </select>
+                        </div>
+                        
+                        <div class="selector-group">
+                            <label class="suit-label">♣️ Clubs</label>
+                            <select id="clubsWorkout" class="workout-select">
+                                <option value="Push-ups">Push-ups</option>
+                                <option value="Sit-ups" selected>Sit-ups</option>
+                                <option value="Bicycle crunches">Bicycle crunches</option>
+                                <option value="Flutter kicks">Flutter kicks</option>
+                                <option value="Squats">Squats</option>
+                                <option value="Bulgarian split squats">Bulgarian split squats</option>
+                                <option value="Reverse lunges">Reverse lunges</option>
+                                <option value="Mountain climbers">Mountain climbers</option>
+                                <option value="Dips">Dips</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regular Card - Hidden initially -->
+                <div class="card clickable hidden" id="currentCard">
                     <div class="card-content">
                         <div class="suit" id="cardSuit">♠</div>
                         <div class="value" id="cardValue">A</div>
@@ -30,7 +97,7 @@
 
             <div class="stats">
                 <p>Card <span id="currentCardNumber">1</span> of <span id="totalCards">52</span></p>
-                <p id="deckStatus">Ready to start!</p>
+                <p id="deckStatus">Select workouts and start!</p>
             </div>
 
             <div class="controls">
@@ -39,7 +106,7 @@
         </main>
 
         <footer>
-            <p>Tap the card to advance • Tap button to start/reset</p>
+            <p>Select workouts • Tap start • Tap cards to advance</p>
         </footer>
     </div>
 
