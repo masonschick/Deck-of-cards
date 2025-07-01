@@ -99,8 +99,8 @@ class CardDeck {
     // Generate workout instruction text
     getWorkoutInstruction(card) {
         const reps = this.getRepCount(card.value);
-        const workout = this.workoutSelections[card.suit];
-        return `Do ${reps} reps of ${workout}`;
+        const workout = this.workoutSelections[card.suit].toLowerCase();
+        return `Do ${reps} ${workout}`;
     }
     
     // Create a fresh deck (much simpler than creating alien fleets!)
