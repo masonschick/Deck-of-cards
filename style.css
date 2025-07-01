@@ -4,6 +4,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Disable text selection on all elements */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Disable context menu on long press */
+    -webkit-touch-callout: none;
 }
 
 body {
@@ -172,6 +179,11 @@ main {
     background-repeat: no-repeat;
     background-size: 14px;
     padding-right: 32px;
+    /* Allow selection for dropdown functionality */
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
 }
 
 .workout-select:focus {
