@@ -424,8 +424,11 @@ class CardDeck {
         
         // Prevent text selection on touch events globally
         document.addEventListener('touchstart', (e) => {
-            // Allow selection only for dropdown elements
-            if (!e.target.classList.contains('workout-select')) {
+            // Allow touch events for dropdown elements and all button elements
+            const isDropdown = e.target.classList.contains('workout-select');
+            const isButton = e.target.classList.contains('btn') || e.target.closest('.btn');
+            
+            if (!isDropdown && !isButton) {
                 e.preventDefault();
             }
         }, { passive: false });
