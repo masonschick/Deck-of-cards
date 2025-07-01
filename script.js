@@ -12,6 +12,7 @@ class CardDeck {
         this.deckStarted = false;
         this.showingCardBack = true;
         this.onFinalCard = false;
+        this.deckCompleted = false;
         
         // Hold-to-reset variables
         this.isHolding = false;
@@ -45,7 +46,8 @@ class CardDeck {
             spadesWorkout: document.getElementById('spadesWorkout'),
             heartsWorkout: document.getElementById('heartsWorkout'),
             diamondsWorkout: document.getElementById('diamondsWorkout'),
-            clubsWorkout: document.getElementById('clubsWorkout')
+            clubsWorkout: document.getElementById('clubsWorkout'),
+            confettiContainer: document.getElementById('confettiContainer')
         };
         
         this.initializeApp();
@@ -63,7 +65,7 @@ class CardDeck {
     
     // Update card counter visibility
     updateCardCounterVisibility() {
-        if (this.deckStarted && !this.showingCardBack) {
+        if (this.deckStarted && !this.showingCardBack && !this.deckCompleted) {
             this.elements.cardCounter.classList.remove('hidden');
         } else {
             this.elements.cardCounter.classList.add('hidden');
@@ -210,15 +212,79 @@ class CardDeck {
     
     // Complete deck (like game over but positive!)
     completeDeck() {
+        console.log('completeDeck called!'); // Debug log
         this.stopTimer();
         this.onFinalCard = false;
+        this.deckCompleted = true;
         this.elements.deckStatus.textContent = '🎉 Deck complete!';
         this.updateButtonText();
+        
+        // Always flip to card back for completion
+        this.elements.currentCard.classList.add('hidden');
+        this.elements.cardBack.classList.remove('hidden');
+        this.showingCardBack = true;
+        
+        // Set completion mode styling
+        this.elements.cardBack.classList.add('completion-mode');
+        this.elements.cardBack.querySelector('h3').textContent = '🎉 Workout Complete! 🎉';
+        
+        // Update UI visibility
+        this.updateCardCounterVisibility();
+        
+        // Trigger confetti animation
+        console.log('Triggering confetti...'); // Debug log
+        this.triggerConfetti();
         
         // Haptic feedback for deck complete (celebration pattern)
         if (navigator.vibrate) {
             navigator.vibrate([200, 100, 200]);
         }
+    }
+    
+    // Trigger confetti celebration animation
+    triggerConfetti() {
+        const colors = ['red', 'blue', 'yellow', 'green', 'purple', 'orange'];
+        const shapes = ['square', 'circle'];
+        const container = this.elements.confettiContainer;
+        
+        console.log('Confetti container found:', !!container); // Debug log
+        
+        // Clear any existing confetti
+        container.innerHTML = '';
+        
+        // Create 30 confetti pieces (reduced for better performance)
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = `confetti-piece ${colors[Math.floor(Math.random() * colors.length)]} ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+                
+                // Random starting position across the top
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-20px';
+                
+                // Random size
+                const size = Math.random() * 8 + 6; // 6-14px
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Add to container
+                container.appendChild(confetti);
+                
+                if (i === 0) console.log('First confetti piece created!'); // Debug log
+                
+                // Remove individual piece after animation
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, 3500);
+            }, i * 50); // Stagger creation by 50ms each
+        }
+        
+        // Clean up entire container after all animations
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 5000);
     }
     
     // Start hold-to-reset process
@@ -283,6 +349,7 @@ class CardDeck {
         this.currentCardIndex = 0;
         this.deckStarted = false;
         this.onFinalCard = false;
+        this.deckCompleted = false;
         this.elements.timer.textContent = '00:00';
         this.elements.deckStatus.textContent = 'Select workouts and start!';
         
@@ -291,12 +358,15 @@ class CardDeck {
             this.toggleCardView();
         }
         
+        // Reset card back to normal mode (show dropdowns)
+        this.elements.cardBack.classList.remove('completion-mode');
+        this.elements.cardBack.querySelector('h3').textContent = 'Select Workouts';
+        
         // Reset workout selections to defaults
         this.resetWorkoutSelections();
         this.updateButtonText();
         this.updateDisplay();
         this.updateCardCounterVisibility();
-        this.updateLogoTimerVisibility();
         
         // Haptic feedback for reset complete
         if (navigator.vibrate) {
