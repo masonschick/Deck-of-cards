@@ -195,6 +195,11 @@ class CardDeck {
             this.updateDisplay();
             this.updateWorkoutStatus();
             
+            // Haptic feedback for card advance
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
             // Check if we're on the final card (52nd)
             if (this.currentCardIndex === this.deck.length - 1) {
                 this.onFinalCard = true;
@@ -209,6 +214,11 @@ class CardDeck {
         this.onFinalCard = false;
         this.elements.deckStatus.textContent = '🎉 Deck complete!';
         this.updateButtonText();
+        
+        // Haptic feedback for deck complete (celebration pattern)
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200]);
+        }
     }
     
     // Start hold-to-reset process
@@ -286,6 +296,12 @@ class CardDeck {
         this.updateButtonText();
         this.updateDisplay();
         this.updateCardCounterVisibility();
+        this.updateLogoTimerVisibility();
+        
+        // Haptic feedback for reset complete
+        if (navigator.vibrate) {
+            navigator.vibrate(200);
+        }
         
         // Clear the hold flag to ensure clean state
         this.justFinishedHold = false;
@@ -389,6 +405,21 @@ class CardDeck {
         
         // Card click to advance (replaces Next Card button)
         this.elements.currentCard.addEventListener('click', () => this.nextCard());
+        
+        // Card press animation for mobile
+        this.elements.currentCard.addEventListener('touchstart', (e) => {
+            if (this.elements.currentCard.classList.contains('clickable')) {
+                this.elements.currentCard.classList.add('pressed');
+            }
+        });
+        
+        this.elements.currentCard.addEventListener('touchend', () => {
+            this.elements.currentCard.classList.remove('pressed');
+        });
+        
+        this.elements.currentCard.addEventListener('touchcancel', () => {
+            this.elements.currentCard.classList.remove('pressed');
+        });
         
         // Workout selection dropdowns
         this.elements.spadesWorkout.addEventListener('change', () => this.updateWorkoutSelections());
