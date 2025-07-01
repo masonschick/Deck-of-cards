@@ -369,7 +369,7 @@ class CardDeck {
         // Touch events for hold-to-reset (mobile)
         btn.addEventListener('touchstart', (e) => {
             if (btn.classList.contains('danger')) {
-                // Don't prevent default immediately - let normal touch feedback happen
+                e.preventDefault(); // Prevent text selection and context menu
                 this.startHoldToReset();
             }
         });
@@ -403,6 +403,32 @@ class CardDeck {
                 this.nextCard();
             }
         });
+        
+        // Additional mobile text selection prevention
+        this.setupMobileOptimizations();
+    }
+    
+    // Setup mobile-specific optimizations
+    setupMobileOptimizations() {
+        // Prevent text selection on any touch interaction
+        document.addEventListener('selectstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Prevent context menu on long press (backup to CSS)
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Prevent text selection on touch events globally
+        document.addEventListener('touchstart', (e) => {
+            // Allow selection only for dropdown elements
+            if (!e.target.classList.contains('workout-select')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     }
 }
 

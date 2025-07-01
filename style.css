@@ -311,6 +311,9 @@ main {
     text-transform: uppercase;
     letter-spacing: 1px;
     min-width: 200px;
+    /* Prevent mobile touch feedback layout shifts */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .btn:active {
