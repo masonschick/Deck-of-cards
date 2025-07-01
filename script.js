@@ -369,7 +369,7 @@ class CardDeck {
         // Touch events for hold-to-reset (mobile)
         btn.addEventListener('touchstart', (e) => {
             if (btn.classList.contains('danger')) {
-                e.preventDefault();
+                // Don't prevent default immediately - let normal touch feedback happen
                 this.startHoldToReset();
             }
         });
