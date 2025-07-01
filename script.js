@@ -212,7 +212,6 @@ class CardDeck {
     
     // Complete deck (like game over but positive!)
     completeDeck() {
-        console.log('completeDeck called!'); // Debug log
         this.stopTimer();
         this.onFinalCard = false;
         this.deckCompleted = true;
@@ -228,11 +227,12 @@ class CardDeck {
         this.elements.cardBack.classList.add('completion-mode');
         this.elements.cardBack.querySelector('h3').textContent = '🎉 Workout Complete! 🎉';
         
+
+        
         // Update UI visibility
         this.updateCardCounterVisibility();
         
         // Trigger confetti animation
-        console.log('Triggering confetti...'); // Debug log
         this.triggerConfetti();
         
         // Haptic feedback for deck complete (celebration pattern)
@@ -240,14 +240,13 @@ class CardDeck {
             navigator.vibrate([200, 100, 200]);
         }
     }
+
     
     // Trigger confetti celebration animation
     triggerConfetti() {
         const colors = ['red', 'blue', 'yellow', 'green', 'purple', 'orange'];
         const shapes = ['square', 'circle'];
         const container = this.elements.confettiContainer;
-        
-        console.log('Confetti container found:', !!container); // Debug log
         
         // Clear any existing confetti
         container.innerHTML = '';
@@ -267,17 +266,19 @@ class CardDeck {
                 confetti.style.width = size + 'px';
                 confetti.style.height = size + 'px';
                 
+                // Random animation duration for variety
+                const duration = Math.random() * 1 + 2.5; // 2.5-3.5 seconds
+                confetti.style.animationDuration = duration + 's';
+                
                 // Add to container
                 container.appendChild(confetti);
-                
-                if (i === 0) console.log('First confetti piece created!'); // Debug log
                 
                 // Remove individual piece after animation
                 setTimeout(() => {
                     if (confetti.parentNode) {
                         confetti.parentNode.removeChild(confetti);
                     }
-                }, 3500);
+                }, duration * 1000 + 500); // Duration + 500ms buffer
             }, i * 50); // Stagger creation by 50ms each
         }
         
@@ -360,7 +361,10 @@ class CardDeck {
         
         // Reset card back to normal mode (show dropdowns)
         this.elements.cardBack.classList.remove('completion-mode');
+        this.elements.cardBack.classList.remove('pressed');
         this.elements.cardBack.querySelector('h3').textContent = 'Select Workouts';
+        
+
         
         // Reset workout selections to defaults
         this.resetWorkoutSelections();
@@ -489,6 +493,21 @@ class CardDeck {
         
         this.elements.currentCard.addEventListener('touchcancel', () => {
             this.elements.currentCard.classList.remove('pressed');
+        });
+        
+        // Completion card press animation (same pattern as regular cards)
+        this.elements.cardBack.addEventListener('touchstart', () => {
+            if (this.elements.cardBack.classList.contains('completion-mode')) {
+                this.elements.cardBack.classList.add('pressed');
+            }
+        });
+        
+        this.elements.cardBack.addEventListener('touchend', () => {
+            this.elements.cardBack.classList.remove('pressed');
+        });
+        
+        this.elements.cardBack.addEventListener('touchcancel', () => {
+            this.elements.cardBack.classList.remove('pressed');
         });
         
         // Workout selection dropdowns

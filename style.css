@@ -127,7 +127,7 @@ main {
 
 .card-back > * {
     position: relative;
-    z-index: 3;
+    z-index: 2;
 }
 
 .card-back h3 {
@@ -153,6 +153,23 @@ main {
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+/* Press animation for completion card - same as regular cards */
+.card-back.completion-mode:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+}
+
+.card-back.completion-mode:active {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+.card-back.completion-mode.pressed {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+    transition: all 0.1s ease;
 }
 
 .workout-selectors {
@@ -627,30 +644,30 @@ footer {
 .confetti-piece.purple { background: #a8e6cf; }
 .confetti-piece.orange { background: #ffaaa5; }
 
-/* Confetti fall animation */
-@keyframes confetti-fall {
+/* Confetti fall animation - combined fall, sway, and rotation */
+@keyframes confetti-dance {
     0% {
-        transform: translateY(-50px) rotate(0deg);
+        transform: translateY(-50px) translateX(0px) rotate(0deg);
         opacity: 1;
     }
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0.3;
-    }
-}
-
-@keyframes confetti-sway {
-    0%, 100% {
-        transform: translateX(0);
-    }
     25% {
-        transform: translateX(-15px);
+        transform: translateY(25vh) translateX(-15px) rotate(180deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateY(50vh) translateX(10px) rotate(360deg);
+        opacity: 0.7;
     }
     75% {
-        transform: translateX(15px);
+        transform: translateY(75vh) translateX(-10px) rotate(540deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(100vh) translateX(5px) rotate(720deg);
+        opacity: 0;
     }
 }
 
 .confetti-piece {
-    animation: confetti-fall 3s ease-out forwards, confetti-sway 2s ease-in-out infinite;
+    animation: confetti-dance 3s ease-out forwards;
 } 
