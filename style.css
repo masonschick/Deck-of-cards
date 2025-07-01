@@ -258,10 +258,11 @@ main {
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    min-height: 80px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .stats p {
@@ -390,6 +391,10 @@ footer {
         font-size: 1.2rem;
         min-width: 200px;
     }
+    
+    .stats {
+        height: 95px;
+    }
 }
 
 /* Standard mobile phones - up to 414px width */
@@ -447,6 +452,10 @@ footer {
         font-size: 1.15rem;
         min-width: 190px;
     }
+    
+    .stats {
+        height: 88px;
+    }
 }
 
 /* Small phones (iPhone SE, etc.) - up to 375px width */
@@ -503,5 +512,9 @@ footer {
         padding: 14px 30px;
         font-size: 1.1rem;
         min-width: 170px;
+    }
+    
+    .stats {
+        height: 85px;
     }
 } 
