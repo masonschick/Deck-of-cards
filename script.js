@@ -404,34 +404,6 @@ class CardDeck {
             }
         });
         
-        // Additional mobile text selection prevention
-        this.setupMobileOptimizations();
-    }
-    
-    // Setup mobile-specific optimizations
-    setupMobileOptimizations() {
-        // Prevent text selection on any touch interaction
-        document.addEventListener('selectstart', (e) => {
-            e.preventDefault();
-            return false;
-        });
-        
-        // Prevent context menu on long press (backup to CSS)
-        document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            return false;
-        });
-        
-        // Prevent text selection on touch events globally
-        document.addEventListener('touchstart', (e) => {
-            // Allow touch events for dropdown elements and all button elements
-            const isDropdown = e.target.classList.contains('workout-select');
-            const isButton = e.target.classList.contains('btn') || e.target.closest('.btn');
-            
-            if (!isDropdown && !isButton) {
-                e.preventDefault();
-            }
-        }, { passive: false });
     }
 }
 
