@@ -13,6 +13,13 @@ class CardDeck {
         this.showingCardBack = true;
         this.onFinalCard = false;
         
+        // Hold-to-reset variables
+        this.isHolding = false;
+        this.holdTimer = null;
+        this.holdStartTime = null;
+        this.holdProgressInterval = null;
+        this.justFinishedHold = false;
+        
         // Default workout selections (reset each session)
         this.defaultWorkouts = {
             '♠': 'Flutter kicks',
@@ -127,8 +134,8 @@ class CardDeck {
         this.updateCardCounterVisibility();
     }
     
-    // Consolidated start/reset functionality with Done button logic
-    startOrReset() {
+    // Handle button click (immediate actions only)
+    handleButtonClick() {
         if (this.onFinalCard) {
             // Done button clicked on final card - complete the deck
             this.completeDeck();
@@ -148,26 +155,10 @@ class CardDeck {
             
             this.updateWorkoutStatus();
             this.updateButtonText();
-        } else {
-            // Reset current deck
-            this.stopTimer();
-            this.currentCardIndex = 0;
-            this.deckStarted = false;
-            this.onFinalCard = false;
-            this.elements.timer.textContent = '00:00';
-            this.elements.deckStatus.textContent = 'Select workouts and start!';
-            
-            // Show card back, hide regular card
-            if (!this.showingCardBack) {
-                this.toggleCardView();
-            }
-            
-            // Reset workout selections to defaults
-            this.resetWorkoutSelections();
-            this.updateButtonText();
+            this.updateDisplay();
+            this.updateCardCounterVisibility();
         }
-        this.updateDisplay();
-        this.updateCardCounterVisibility();
+        // Reset functionality is now handled by hold-to-reset only
     }
     
     // Update workout status text
@@ -178,14 +169,22 @@ class CardDeck {
         }
     }
     
-    // Update button text based on current state
+    // Update button text and styling based on current state
     updateButtonText() {
+        const btn = this.elements.startResetBtn;
+        
+        // Remove all button classes
+        btn.className = 'btn';
+        
         if (!this.deckStarted) {
-            this.elements.startResetBtn.textContent = 'Start New Deck';
+            btn.innerHTML = '<span class="btn-text">Start New Deck</span>';
+            btn.classList.add('primary');
         } else if (this.onFinalCard) {
-            this.elements.startResetBtn.textContent = 'Done';
+            btn.innerHTML = '<span class="btn-text">Done</span>';
+            btn.classList.add('primary');
         } else {
-            this.elements.startResetBtn.textContent = 'Reset';
+            btn.innerHTML = '<span class="btn-text">Hold to Reset</span><div class="progress-fill"></div>';
+            btn.classList.add('danger');
         }
     }
     
@@ -210,6 +209,86 @@ class CardDeck {
         this.onFinalCard = false;
         this.elements.deckStatus.textContent = '🎉 Deck complete!';
         this.updateButtonText();
+    }
+    
+    // Start hold-to-reset process
+    startHoldToReset() {
+        if (this.isHolding) return; // Prevent multiple holds
+        
+        this.isHolding = true;
+        this.holdStartTime = Date.now();
+        
+        // Start progress animation
+        const progressFill = this.elements.startResetBtn.querySelector('.progress-fill');
+        if (progressFill) {
+            this.holdProgressInterval = setInterval(() => {
+                const elapsed = Date.now() - this.holdStartTime;
+                const progress = Math.min((elapsed / 2000) * 100, 100); // 2 seconds
+                progressFill.style.width = `${progress}%`;
+            }, 16); // ~60fps
+        }
+        
+        // Set timer for 2 seconds
+        this.holdTimer = setTimeout(() => {
+            this.executeReset();
+        }, 2000);
+    }
+    
+    // Cancel hold-to-reset process
+    cancelHoldToReset() {
+        if (!this.isHolding) return;
+        
+        this.isHolding = false;
+        this.justFinishedHold = true;
+        
+        // Clear the flag after a short delay to prevent click trigger
+        setTimeout(() => {
+            this.justFinishedHold = false;
+        }, 100);
+        
+        // Clear timers
+        if (this.holdTimer) {
+            clearTimeout(this.holdTimer);
+            this.holdTimer = null;
+        }
+        
+        if (this.holdProgressInterval) {
+            clearInterval(this.holdProgressInterval);
+            this.holdProgressInterval = null;
+        }
+        
+        // Reset progress bar
+        const progressFill = this.elements.startResetBtn.querySelector('.progress-fill');
+        if (progressFill) {
+            progressFill.style.width = '0%';
+        }
+    }
+    
+    // Execute the actual reset
+    executeReset() {
+        this.cancelHoldToReset(); // Clean up hold state
+        
+        // Reset current deck
+        this.stopTimer();
+        this.currentCardIndex = 0;
+        this.deckStarted = false;
+        this.onFinalCard = false;
+        this.elements.timer.textContent = '00:00';
+        this.elements.deckStatus.textContent = 'Select workouts and start!';
+        
+        // Show card back, hide regular card
+        if (!this.showingCardBack) {
+            this.toggleCardView();
+        }
+        
+        // Reset workout selections to defaults
+        this.resetWorkoutSelections();
+        this.updateButtonText();
+        this.updateDisplay();
+        this.updateCardCounterVisibility();
+        
+        // Clear the hold flag to ensure clean state
+        this.justFinishedHold = false;
     }
     
     // Timer functions (simpler than your frame rate management)
@@ -249,8 +328,64 @@ class CardDeck {
     
     // Event listeners (like your _check_events method)
     setupEventListeners() {
-        // Consolidated start/reset button
-        this.elements.startResetBtn.addEventListener('click', () => this.startOrReset());
+        const btn = this.elements.startResetBtn;
+        
+        // Button click (for immediate actions)
+        btn.addEventListener('click', (e) => {
+            // Prevent click if we just finished a hold
+            if (this.justFinishedHold) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Only handle immediate clicks for Start/Done, prevent default for Reset
+            if (btn.classList.contains('danger')) {
+                e.preventDefault();
+                return false;
+            }
+            this.handleButtonClick();
+        });
+        
+        // Mouse events for hold-to-reset
+        btn.addEventListener('mousedown', (e) => {
+            if (btn.classList.contains('danger')) {
+                e.preventDefault();
+                this.startHoldToReset();
+            }
+        });
+        
+        btn.addEventListener('mouseup', () => {
+            if (btn.classList.contains('danger')) {
+                this.cancelHoldToReset();
+            }
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            if (btn.classList.contains('danger')) {
+                this.cancelHoldToReset();
+            }
+        });
+        
+        // Touch events for hold-to-reset (mobile)
+        btn.addEventListener('touchstart', (e) => {
+            if (btn.classList.contains('danger')) {
+                e.preventDefault();
+                this.startHoldToReset();
+            }
+        });
+        
+        btn.addEventListener('touchend', (e) => {
+            if (btn.classList.contains('danger')) {
+                e.preventDefault();
+                this.cancelHoldToReset();
+            }
+        });
+        
+        btn.addEventListener('touchcancel', () => {
+            if (btn.classList.contains('danger')) {
+                this.cancelHoldToReset();
+            }
+        });
         
         // Card click to advance (replaces Next Card button)
         this.elements.currentCard.addEventListener('click', () => this.nextCard());
